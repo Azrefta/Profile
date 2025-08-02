@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bachira Not Dev - Profile</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 25%, #0f3460 50%, #533483 75%, #1a1a2e 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            min-height: 100vh;
+            color: #fff;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Partikel Bintang Jatuh */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0;
+            animation: shooting-star linear infinite;
+        }
+
+        @keyframes shooting-star {
+            0% {
+                opacity: 1;
+                transform: translateX(-100px) translateY(-100px);
+            }
+            70% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: translateX(100vw) translateY(100vh);
+            }
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            background: linear-gradient(45deg, #00d4ff, #0099cc, #0066ff);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: titleGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes titleGlow {
+            from { filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.3)); }
+            to { filter: drop-shadow(0 0 20px rgba(0, 212, 255, 0.6)); }
+        }
+
+        .profile-photo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 4px solid #00d4ff;
+            margin: 0 auto 50px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.4);
+            animation: profilePulse 4s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-photo::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: photoShine 3s linear infinite;
+        }
+
+        @keyframes profilePulse {
+            0%, 100% { 
+                transform: scale(1);
+                box-shadow: 0 0 30px rgba(0, 212, 255, 0.4);
+            }
+            50% { 
+                transform: scale(1.05);
+                box-shadow: 0 0 40px rgba(0, 212, 255, 0.6);
+            }
+        }
+
+        @keyframes photoShine {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .menu-item {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid #00d4ff;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(0, 212, 255, 0.3);
+            border-color: #0099ff;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .menu-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .menu-item:hover::before {
+            left: 100%;
+        }
+
+        .menu-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .menu-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .menu-desc {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+
+        /* Modal Payment */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #533483 100%);
+            padding: 30px;
+            border-radius: 20px;
+            border: 2px solid #00d4ff;
+            text-align: center;
+            color: white;
+            min-width: 300px;
+            max-width: 90vw;
+            animation: slideIn 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #00d4ff;
+            transition: color 0.3s ease;
+        }
+
+        .close-btn:hover {
+            color: #fff;
+        }
+
+        .payment-section {
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            border: 1px solid #00d4ff;
+        }
+
+        .payment-title {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: #00d4ff;
+        }
+
+        .payment-number {
+            font-size: 1.1rem;
+            font-weight: bold;
+            background: rgba(0, 212, 255, 0.2);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border: 1px solid #00d4ff;
+        }
+
+        .qr-section {
+            margin-top: 20px;
+        }
+
+        .qr-placeholder {
+            width: 150px;
+            height: 150px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 15px auto;
+            font-size: 3rem;
+            color: #333;
+            border: 2px solid #00d4ff;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { 
+                opacity: 0; 
+                transform: translate(-50%, -50%) scale(0.8); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translate(-50%, -50%) scale(1); 
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 15px;
+            }
+            
+            .title {
+                font-size: 2rem;
+            }
+            
+            .profile-photo {
+                width: 120px;
+                height: 120px;
+                font-size: 3rem;
+            }
+            
+            .modal-content {
+                margin: 20px;
+                min-width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Partikel Bintang -->
+    <div class="stars" id="stars"></div>
+
+    <div class="container">
+        <h1 class="title">Bachira Not Dev</h1>
+        
+        <div class="profile-photo">
+           👨‍💻
+        </div>
+
+        <div class="menu-item" onclick="openWhatsApp()">
+            <span class="menu-icon">💬</span>
+            <div class="menu-text">WhatsApp Chat</div>
+            <div class="menu-desc">Hubungi saya langsung</div>
+        </div>
+
+        <div class="menu-item" onclick="openWhatsAppGroup()">
+            <span class="menu-icon">👥</span>
+            <div class="menu-text">Grup WhatsApp</div>
+            <div class="menu-desc">Bergabung dengan komunitas</div>
+        </div>
+
+        <div class="menu-item" onclick="openWhatsAppChannel()">
+            <span class="menu-icon">📢</span>
+            <div class="menu-text">Saluran WhatsApp</div>
+            <div class="menu-desc">Ikuti update terbaru</div>
+        </div>
+
+        <div class="menu-item" onclick="openPayment()">
+            <span class="menu-icon">💳</span>
+            <div class="menu-text">Payment</div>
+            <div class="menu-desc">Informasi pembayaran</div>
+        </div>
+    </div>
+
+    <!-- Modal Payment -->
+    <div class="modal" id="paymentModal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closePayment()">&times;</span>
+            <h2 style="color: #00d4ff; margin-bottom: 20px;">💳 Payment Information</h2>
+            
+            <div class="payment-section">
+                <div class="payment-title">📱 DANA</div>
+                <div class="payment-number">0838-4565-0969</div>
+                <small>a.n. Caspinih</small>
+            </div>
+
+            <div class="payment-section">
+                <div class="payment-title">🏍️ GoPay</div>
+                <div class="payment-number">0838-4565-0969</div>
+                <small>a.n. Bayu Febrian</small>
+            </div>
+
+            <div class="qr-section">
+                <div class="payment-title">📱 QR Code</div>
+                <div class="qr-placeholder">
+                    Not Qr
+                </div>
+                <small>Scan untuk pembayaran cepat</small>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Buat partikel bintang jatuh
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            
+            function createStar() {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                
+                // Random posisi dan ukuran
+                star.style.left = Math.random() * 100 + 'vw';
+                star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                star.style.animationDelay = Math.random() * 2 + 's';
+                
+                // Random ukuran bintang
+                const size = Math.random() * 3 + 1;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                
+                // Random opacity
+                star.style.opacity = Math.random() * 0.8 + 0.2;
+                
+                starsContainer.appendChild(star);
+                
+                // Hapus bintang setelah animasi selesai
+                setTimeout(() => {
+                    if (star.parentNode) {
+                        star.parentNode.removeChild(star);
+                    }
+                }, 5000);
+            }
+            
+            // Buat bintang baru setiap 300ms
+            setInterval(createStar, 300);
+        }
+
+        // Fungsi untuk membuka WhatsApp chat
+        function openWhatsApp() {
+            // Ganti dengan nomor WhatsApp yang sebenarnya
+            const phoneNumber = '6283845650969'; // Format: 62 + nomor tanpa 0
+            const message = 'List Produk Ngab';
+            const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+            window.open(url, '_blank');
+        }
+
+        // Fungsi untuk membuka grup WhatsApp
+        function openWhatsAppGroup() {
+            // Ganti dengan link grup WhatsApp yang sebenarnya
+            const groupUrl = 'https://chat.whatsapp.com/H3VtND9cpbN8hTfFsHwkMO?mode=ac_t';
+            window.open(groupUrl, '_blank');
+        }
+
+        // Fungsi untuk membuka saluran WhatsApp
+        function openWhatsAppChannel() {
+            // Ganti dengan link saluran WhatsApp yang sebenarnya
+            const channelUrl = 'https://whatsapp.com/channel/0029VbAQFTlFXUuUyGHPfP3k';
+            window.open(channelUrl, '_blank');
+        }
+
+        // Fungsi untuk membuka modal payment
+        function openPayment() {
+            document.getElementById('paymentModal').style.display = 'block';
+        }
+
+        // Fungsi untuk menutup modal payment
+        function closePayment() {
+            document.getElementById('paymentModal').style.display = 'none';
+        }
+
+        // Tutup modal jika klik di luar modal
+        window.onclick = function(event) {
+            const modal = document.getElementById('paymentModal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // Animasi hover untuk menu items
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px) scale(1.02)';
+            });
+            
+            item.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Efek klik untuk menu items
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', function() {
+                this.style.transform = 'scale(0.98)';
+                setTimeout(() => {
+                    this.style.transform = 'translateY(-5px) scale(1.02)';
+                }, 100);
+            });
+        });
+
+        // Inisialisasi partikel bintang saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', function() {
+            createStars();
+        });
+
+        // Efek ketik untuk nomor payment (opsional)
+        function typeEffect(element, text, speed = 50) {
+            element.textContent = '';
+            let i = 0;
+            const timer = setInterval(() => {
+                if (i < text.length) {
+                    element.textContent += text.charAt(i);
+                    i++;
+                } else {
+                    clearInterval(timer);
+                }
+            }, speed);
+        }
+    </script>
+</body>
+</html>
